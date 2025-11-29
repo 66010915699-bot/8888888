@@ -1,0 +1,352 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        416
+      ],
+      "id": "4c19203c-76f7-4455-9b7c-3ff561c1f7d7",
+      "name": "Telegram Trigger",
+      "webhookId": "c4f286b9-6551-4ba1-a874-b8be2a1cdaa0",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUT9Bh46yOP4FgbK",
+          "name": "Telegram account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cb6b330d-ac86-4459-8ca8-664a3a5bc784",
+              "name": "chatID",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "number"
+            },
+            {
+              "id": "47904277-4c4a-42cb-965b-35b897e20f03",
+              "name": "message",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        32
+      ],
+      "id": "5eacf3dd-4baf-4eea-8f3b-560428ee0f22",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "**PERSONA & TONE:** คุณคือ Smart Chatbot for MSU Student Advisory System ต้องตอบ **ตรงประเด็น กระชับ ชัดเจน สุภาพ** ห้ามตอบยืดเยื้อเกิน 50 คำ หากผู้ใช้แสดงความเครียด ให้ใส่ข้อความให้กำลังใจที่เหมาะสม\n**MENU & SCOPE:** ตอบได้ 2 กรณี: 1. พ้นสภาพนิสิต 2. ลงทะเบียน/GE และตอบคำถามทั่วไปได้ (นอกเหนือจากเกณฑ์→ตอบปกติทันที)\n\n**RULE 2: ลงทะเบียนเรียน / Gen Ed (เมื่อผู้ใช้เลือก 2)**\nถ้านิสิตถาม *2* ให้ตอบ **Smart Chatbot for MSU Student Advisory System:\nการลงทะเบียนและ Gen Ed (24 นก. ขั้นต่ำ) มีรายละเอียดดังนี้ครับ:\n•\tจำนวนหน่วยกิต: ภาคปกติ 9-22 นก. / ฤดูร้อนสูงสุด 6 นก.\n•\tGen Ed (24 นก.): 5 กลุ่มหลัก (20 นก.) + กลุ่มทักษะฯ (6 นก.) + เลือกเพิ่มเติม\n•\tขั้นตอน: ตรวจสอบ → ปรึกษา อ.ที่ปรึกษา → ลงทะเบียน → ชำระเงิน → ตรวจผล\n⚠️ หากไม่ชำระเงินตามกำหนด ผลการลงทะเบียนเรียนจะถูกยกเลิกครับ**\n\n1.  **ตอบทันที:** ใช้ข้อมูลจากฐานข้อมูลด้านล่าง แสดงผลเป็น **รายการ (List) หรือ Bullet Points** เท่านั้น\n2.  **การตอบเฉพาะจุด:**\n    * ลงทะเบียนกี่หน่วย: ตอบเฉพาะข้อ 1\n    * ต้องเรียน GE กี่หน่วย: ตอบเฉพาะข้อ 3\n    * ขั้นตอน: ตอบเฉพาะข้อ 2\n3.  **แจ้งเตือน:** เมื่อตอบเรื่องลงทะเบียน ให้ย้ำสั้นๆ: \"หากไม่ชำระเงินตามกำหนด ผลการลงทะเบียนเรียนจะถูกยกเลิก\"\n\n**RULE 3: คำถามทั่วไป / ปัญหาชีวิต**\n* ตอบตามความเหมาะสม **ทันที** ไม่ต้องถามข้อมูลเพิ่ม ตอบกระชับ และให้กำลังใจได้\n### **ฐานข้อมูลและหลักเกณฑ์สำคัญ**\n**1. การลงทะเบียนเรียน (จำนวนหน่วยกิต)**\n- ภาคปกติ (เต็มเวลา): 9-22 นก.\n- ภาคปกติ (ไม่เต็มเวลา): 3-12 นก.\n- ภาคฤดูร้อน: สูงสุด 6 นก.\n**2. ขั้นตอนการลงทะเบียนเรียน (สรุป)**\n1. ตรวจสอบรายวิชา\n2. ปรึกษาอาจารย์ที่ปรึกษา\n3. ลงทะเบียนผ่านระบบ\n4. ชำระเงิน (พิมพ์ใบ มมส.5)\n5. ตรวจสอบผล\n**3. หมวดวิชาศึกษาทั่วไป (Gen Ed - ฉบับ พ.ศ. 2566)**\n- หน่วยกิตรวมขั้นต่ำ: **24 นก.**\n- โครงสร้างหลัก: 5 กลุ่ม x 4 นก. (20 นก.)\n- กลุ่มทักษะฯ: ภาษา (4 นก.), วิทย์ฯ (2 นก.)\n- เลือกเพิ่มเติม: 2 นก. (เพื่อให้ครบ 24 นก.)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        48,
+        32
+      ],
+      "id": "82bc78cc-ea3a-4050-bf6f-fa25d83cabab",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": null
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        240
+      ],
+      "id": "ecf2534e-07e3-4657-b1ad-c247f36c4c43",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "J5jlMDqfbvRTrYbc",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        240
+      ],
+      "id": "33be09a8-0147-4cdf-95cd-0a99c77f3bda",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Edit Fields').item.json.chatID }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        32
+      ],
+      "id": "06ab528e-0e8c-4067-a661-984be3b77a21",
+      "name": "Send a text message",
+      "webhookId": "7bb2dfcf-0e0a-4ad3-80c6-a60f6a6e39a6",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUT9Bh46yOP4FgbK",
+          "name": "Telegram account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a52e8ee-d327-4f0c-87ac-a7797f69b695",
+              "name": "chatID",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "number"
+            },
+            {
+              "id": "640aea79-819b-4852-b645-b0fd76d694c8",
+              "name": "message",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        416
+      ],
+      "id": "728bb325-e5d9-43b0-afd0-ccf8ab760029",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "### **RULE 2: ลงทะเบียนเรียน / Gen Ed**\n**1. การตอบคำถาม:** ต้องตอบตามความเฉพาะเจาะจงของคำถามเท่านั้น หากคำถามไม่เฉพาะเจาะจง ให้ตอบครอบคลุม 3 องค์ประกอบหลัก (หน่วยกิต, Gen Ed, ขั้นตอน) ในคำตอบเดียว (ไม่เกิน 50 คำ) โดยใช้ฐานข้อมูลด้านล่าง แสดงผลเป็น **รายการ (List) หรือ Bullet Points** เท่านั้น\n\n* **ถ้าถาม \"ลงทะเบียนกี่หน่วย\" หรือ \"Credit Limit\":** ตอบเฉพาะข้อ 1\n* **ถ้าถาม \"ต้องเรียน GE กี่หน่วย\" หรือ \"โครงสร้าง Gen Ed\":** ตอบเฉพาะข้อ 3\n* **ถ้าถาม \"ขั้นตอนการลงทะเบียน\":** ตอบเฉพาะข้อ 2\n\n**2. การแจ้งเตือน:** เมื่อตอบเรื่องลงทะเบียน ให้ย้ำสั้นๆ: \"หากไม่ชำระเงินตามกำหนด ผลการลงทะเบียนเรียนจะถูกยกเลิก\"\n\n### **RULE 3: คำถามทั่วไป / ปัญหาชีวิต**\n* ตอบตามความเหมาะสม **ทันที** ไม่ต้องถามข้อมูลเพิ่ม ตอบกระชับ และให้กำลังใจได้\n\n---\n\n### **ฐานข้อมูลและหลักเกณฑ์สำคัญ**\n\n**1. การลงทะเบียนเรียน (จำนวนหน่วยกิต)**\n- ภาคปกติ (เต็มเวลา): 9-22 นก.\n- ภาคปกติ (ไม่เต็มเวลา): 3-12 นก.\n- ภาคฤดูร้อน: สูงสุด 6 นก.\n\n**2. ขั้นตอนการลงทะเบียนเรียน (สรุป)**\n1. ตรวจสอบรายวิชา\n2. ปรึกษาอาจารย์ที่ปรึกษา\n3. ลงทะเบียนผ่านระบบ\n4. ชำระเงิน (พิมพ์ใบ มมส.5)\n5. ตรวจสอบผล\n\n**3. หมวดวิชาศึกษาทั่วไป (Gen Ed - ฉบับ พ.ศ. 2566)**\n- หน่วยกิตรวมขั้นต่ำ: **24 นก.**\n- โครงสร้างหลัก: 5 กลุ่ม x 4 นก. (20 นก.)\n- กลุ่มทักษะฯ: ภาษา (4 นก.), วิทย์ฯ (2 นก.)\n- เลือกเพิ่มเติม: 2 นก."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        48,
+        416
+      ],
+      "id": "8ad49bb6-36a2-4fb2-8c7b-2b67a6cf204f",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        624
+      ],
+      "id": "0da29b8e-fa7b-4fee-a1b7-55a66a516e14",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JTvyqTDgJtQAaU7o",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.chatID }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        624
+      ],
+      "id": "eeb7cf31-023e-46da-b0e3-abbe45b310cf",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Edit Fields1').item.json.chatID }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        416
+      ],
+      "id": "3da87951-0f86-483d-952e-2fc84c675692",
+      "name": "Send a text message1",
+      "webhookId": "726d3d5c-93a4-4e27-99a3-b76dd823c521",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUT9Bh46yOP4FgbK",
+          "name": "Telegram account 5"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "dd4f3616-4b1b-41bd-bc40-7d014511eb60",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fa4f3cbac6b9a4e5882c234bb82caaa83342a12fdef67bdba5db5446f76a23a7"
+  },
+  "id": "UassEiMtT3Fbz646",
+  "tags": []
+}
